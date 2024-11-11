@@ -1,6 +1,6 @@
 name: ServiceNow Change Request Automation
 
-# Trigger the workflow on pull request events and push to the main branch
+# Trigger the workflow on pull request events and push to the main branch (test)
 on:
   pull_request:
     types: [opened, closed]
