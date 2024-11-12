@@ -35,10 +35,8 @@ jobs:
 
         # Construct the change request data payload
         export DATA='{
-          "short_description": "Automated Change Request from GitHub Actions",
-          "description": "'"$CHANGE_TYPE"' in GitHub repository",
-          "u_git_repo": "'"$GITHUB_REPOSITORY"'",
-          "u_pr_link": "'"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
+          "short_description": "Automated Change Request from GitHub Actions - Qamar",
+          "description": "'"$CHANGE_TYPE"' in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
           "u_change_reason": "Automated change triggered by GitHub Actions"
         }'
 
