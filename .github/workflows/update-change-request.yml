@@ -25,11 +25,11 @@ jobs:
         DATA='{
           "business_service": "Network",
           "service_offering": "Network Management Applications",
-          "comments": "'"$GITHUB_REF"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
+          "comments": "'"$GITHUB_REF"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'"
         }'
 
         # Send the PUT/PATCH request to ServiceNow API to update the change request
-        curl -X PUT "$SNOW_INSTANCE_URL/api/now/table/change_request/$CHANGE_REQUEST_SYS_ID" \
+        curl -X PUT "$SNOW_INSTANCE_URL/api/sn_chg_rest/change/$CHANGE_REQUEST_SYS_ID" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --user "$SNOW_USER:$SNOW_PASSWORD" \
