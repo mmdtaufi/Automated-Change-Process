@@ -24,6 +24,7 @@ jobs:
         # Define the data payload for the update
         DATA='{
           "business_service": "Network",
+          "service_offering": "Network Management Applications",
           "comments": "'"$GITHUB_REF"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
         }'
 
