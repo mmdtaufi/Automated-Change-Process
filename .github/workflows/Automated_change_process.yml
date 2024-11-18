@@ -2,7 +2,7 @@ name: ServiceNow Change Request Management
 
 on:
   pull_request:
-    types: [opened]  # Trigger on both opened and closed events
+    types: [opened, closed]  # Trigger on both opened and closed events
   push:
     branches:
       - main
