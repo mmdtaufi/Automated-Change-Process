@@ -2,7 +2,7 @@ name: ServiceNow Change Request Management
 
 on:
   pull_request:
-    types: [opened, closed]  # Trigger on both opened and closed events
+    types: [opened]  # Trigger on both opened and closed events
   push:
     branches:
       - main
@@ -41,7 +41,7 @@ jobs:
             "short_description": "Automated Change Request from GitHub Actions - Qamar 18/11",
             "business_service": "Network",
             "service_offering": "Network Management Applications",
-            "configuration_items": "Network Router A",
+            "cmdb_ci": "Network Router A",
             "description": "New PR in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'"
           }'
 
