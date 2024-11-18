@@ -2,7 +2,7 @@ name: Update ServiceNow Change Request
 
 on:
   pull_request:
-    types: [closed]  # Trigger when a pull request is closed (merged)
+    types: [closed]  # Trigger when a pull request is closed (merged) 
 
 jobs:
   update-change-request:
