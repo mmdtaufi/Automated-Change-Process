@@ -2,7 +2,7 @@ name: ServiceNow Change Request Management
 
 on:
   pull_request:
-    types: [opened, closed]  # Trigger on both opened and closed events
+    types: [opened]  # Trigger on both opened and closed events
   push:
     branches:
       - main
@@ -38,13 +38,11 @@ jobs:
         run: |
           # Construct the change request data payload
           export DATA='{
-            "short_description": "Automated Change Request from GitHub Actions - Qamar",
+            "short_description": "Automated Change Request from GitHub Actions - Qamar1",
             "business_service": "Network",
             "service_offering": "Network Management Applications",
             "configuration_items": "Network Router A",
-            "assigned_to": "John Doe",
-            "description": "New PR in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
-            "u_change_reason": "Automated change triggered by GitHub Actions"
+            "description": "New PR in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'"
           }'
 
           # Send a POST request to ServiceNow to create the change request
@@ -71,7 +69,8 @@ jobs:
             "short_description": "Updated short description - Automated",
             "state": "In Progress",  # Example state update
             "comments": "Additional comments for change request",
-            "description": "Update triggered for closed PR"
+            "description": "Update triggered for closed PR",
+            "assigned_to": "John Doe",
           }'
 
           # Send the PUT/PATCH request to ServiceNow API to update the change request
