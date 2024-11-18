@@ -38,7 +38,7 @@ jobs:
         run: |
           # Construct the change request data payload
           export DATA='{
-            "short_description": "Automated Change Request from GitHub Actions - Qamar1",
+            "short_description": "Automated Change Request from GitHub Actions - Qamar 18/11",
             "business_service": "Network",
             "service_offering": "Network Management Applications",
             "configuration_items": "Network Router A",
