@@ -23,7 +23,7 @@ jobs:
         export CHANGE_TYPE="Code Push"
         
         export DATA='{
-          "short_description": "Automated Change Request from GitHub Actions - Testing4",
+          "short_description": "Automated Change Request from GitHub Actions - Testing 5",
           "description": "'"$CHANGE_TYPE"' in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'"
         }'
 
