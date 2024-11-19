@@ -3,7 +3,7 @@ name: ServiceNow Change Request Automation
 # Trigger the workflow on pull request events and push to the main branch
 on:
   pull_request:
-    types: [opened, closed]
+    types: [opened]
   push:
     branches:
       - main
@@ -35,7 +35,7 @@ jobs:
 
         # Construct the change request data payload
         export DATA='{
-          "short_description": "Automated Change Request from GitHub Actions",
+          "short_description": "Test19/11 - Automated Change Request from GitHub Actions",
           "description": "'"$CHANGE_TYPE"' in GitHub repository",
           "u_git_repo": "'"$GITHUB_REPOSITORY"'",
           "u_pr_link": "'"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
