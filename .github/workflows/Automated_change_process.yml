@@ -43,7 +43,7 @@ jobs:
       run: |
         # Construct the change request data payload
         export DATA='{
-          "short_description": "Automated Change Request from GitHub Actions - testing",
+          "short_description": "Automated Change Request from GitHub Actions - testing2",
           "description": "'"$CHANGE_TYPE"' in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
         }'
 
