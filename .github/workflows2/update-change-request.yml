@@ -1,0 +1,56 @@
+name: ServiceNow Update Change Request
+
+# Trigger the workflow on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-change-request:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Step 1: Load sys_id of previously created change request (assuming saved in a file)
+    - name: Load Change Request sys_id
+      id: load-sys-id
+      run: |
+        if [ -f change_request_sys_id.txt ]; then
+          export SYS_ID=$(cat change_request_sys_id.txt)
+          echo "SYS_ID=$SYS_ID" >> $GITHUB_ENV
+        else
+          echo "Change request sys_id not found!"
+          exit 1
+        fi
+
+    # Step 2: Update Change Request in ServiceNow
+    - name: Update ServiceNow Change Request
+      env:
+        SNOW_INSTANCE_URL: ${{ secrets.SNOW_INSTANCE_URL }}
+        SNOW_USER: ${{ secrets.SNOW_USER }}
+        SNOW_PASSWORD: ${{ secrets.SNOW_PASSWORD }}
+        SYS_ID: ${{ env.SYS_ID }}
+      run: |
+        if [ -z "$SYS_ID" ]; then
+          echo "No sys_id provided, cannot update change request."
+          exit 1
+        fi
+
+        # Construct the update data payload
+        export DATA='{
+          "business_service": "CDS Profisee",
+          "service_offering": "CDS for Profisee",
+          "cmdb_ci": "Missing CI - CDS for Profisee",
+          "comments": "This is an automated update from GitHub Actions"
+        }'
+
+        # Send a PATCH request to ServiceNow to update the change request
+        curl -X PUT "$SNOW_INSTANCE_URL/api/sn_chg_rest/change/$SYS_ID" \
+        --header "Accept: application/json" \
+        --header "Content-Type: application/json" \
+        --user "$SNOW_USER:$SNOW_PASSWORD" \
+        --data "$DATA" \
+        --fail || echo "Failed to update change request"
