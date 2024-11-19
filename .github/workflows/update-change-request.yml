@@ -18,7 +18,7 @@ jobs:
     - name: Set Change Request sys_id
       run: |
         # Manually specify the sys_id here
-        export SYS_ID="5d7f945cc34a16504fcd5031150131e2"
+        export SYS_ID="eca5f35047c21a106c83fdaf016d4328"
         echo "SYS_ID=$SYS_ID" >> $GITHUB_ENV
 
     # Step 2: Update Change Request in ServiceNow
