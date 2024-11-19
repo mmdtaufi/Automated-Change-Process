@@ -36,7 +36,7 @@ jobs:
     - name: Create ServiceNow Change Request
       if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
       env:
-        CHANGE_TYPE: ${{ env.CHANGE_TYPE }}
+        CHANGE_TYPE: ${{ secrets.CHANGE_TYPE }}
         SNOW_INSTANCE_URL: ${{ secrets.SNOW_INSTANCE_URL }}
         SNOW_USER: ${{ secrets.SNOW_USER }}
         SNOW_PASSWORD: ${{ secrets.SNOW_PASSWORD }}
