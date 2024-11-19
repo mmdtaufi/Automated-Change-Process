@@ -3,10 +3,12 @@ name: ServiceNow Change Request Automation
 # Trigger the workflow on pull request events and push to the main branch
 on:
   pull_request:
-    types: [opened]
+    types: [opened, closed]
   push:
     branches:
       - main
+    paths-ignore:
+      - '**/*'  # Prevent triggering on push if unnecessary
 
 jobs:
   create-change-request:
@@ -17,29 +19,32 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Step 2: Send change request to ServiceNow
+    # Step 2: Set CHANGE_TYPE based on event
+    - name: Determine Change Type
+      id: set_change_type
+      run: |
+        if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "opened" ]]; then
+          echo "CHANGE_TYPE=New PR" >> $GITHUB_ENV
+        elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" ]]; then
+          echo "CHANGE_TYPE=Merged PR" >> $GITHUB_ENV
+        else
+          echo "CHANGE_TYPE=Code Push" >> $GITHUB_ENV
+        fi
+      shell: bash
+
+    # Step 3: Create ServiceNow Change Request only for specific events
     - name: Create ServiceNow Change Request
+      if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
       env:
+        CHANGE_TYPE: ${{ env.CHANGE_TYPE }}
         SNOW_INSTANCE_URL: ${{ secrets.SNOW_INSTANCE_URL }}
         SNOW_USER: ${{ secrets.SNOW_USER }}
         SNOW_PASSWORD: ${{ secrets.SNOW_PASSWORD }}
       run: |
-        # Check if this is a pull request creation or merge
-        if [[ "$GITHUB_EVENT_NAME" == "pull_request" && "$GITHUB_EVENT_ACTION" == "opened" ]]; then
-          export CHANGE_TYPE="New PR"
-        elif [[ "$GITHUB_EVENT_NAME" == "pull_request" && "$GITHUB_EVENT_ACTION" == "closed" ]]; then
-          export CHANGE_TYPE="Merged PR"
-        else
-          export CHANGE_TYPE="Code Push"
-        fi
-
         # Construct the change request data payload
         export DATA='{
-          "short_description": "Test19/11 - Automated Change Request from GitHub Actions",
-          "description": "'"$CHANGE_TYPE"' in GitHub repository",
-          "u_git_repo": "'"$GITHUB_REPOSITORY"'",
-          "u_pr_link": "'"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
-          "u_change_reason": "Automated change triggered by GitHub Actions"
+          "short_description": "Automated Change Request from GitHub Actions",
+          "description": "'"$CHANGE_TYPE"' in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'",
         }'
 
         # Send a POST request to ServiceNow to create the change request
@@ -48,4 +53,4 @@ jobs:
         --header "Content-Type: application/json" \
         --user "$SNOW_USER:$SNOW_PASSWORD" \
         --data "$DATA" \
-        --fail || echo "Failed to create change request"
+        --fail || echo "Failed to create change request in ServiceNow"
