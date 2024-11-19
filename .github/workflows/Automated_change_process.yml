@@ -1,8 +1,9 @@
 name: ServiceNow Change Request Automation
 
 on:
-  pull_request:
-    types: [opened, closed]
+  push:
+    branches:
+      - main
 
 jobs:
   create-change-request:
@@ -18,14 +19,11 @@ jobs:
         SNOW_USER: ${{ secrets.SNOW_USER }}
         SNOW_PASSWORD: ${{ secrets.SNOW_PASSWORD }}
       run: |
-        if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "opened" ]]; then
-          export CHANGE_TYPE="New PR"
-        else [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" ]]; then
-          export CHANGE_TYPE="Merged PR"
-        fi
-
+        # Set change type for code push
+        export CHANGE_TYPE="Code Push"
+        
         export DATA='{
-          "short_description": "Automated Change Request from GitHub Actions - Testing2",
+          "short_description": "Automated Change Request from GitHub Actions - Testing3",
           "description": "'"$CHANGE_TYPE"' in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'"
         }'
 
