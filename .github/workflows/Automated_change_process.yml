@@ -3,9 +3,6 @@ name: ServiceNow Change Request Automation
 on:
   pull_request:
     types: [opened, closed]
-  push:
-    branches:
-      - main
 
 jobs:
   create-change-request:
@@ -23,14 +20,12 @@ jobs:
       run: |
         if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "opened" ]]; then
           export CHANGE_TYPE="New PR"
-        elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" ]]; then
+        else [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" ]]; then
           export CHANGE_TYPE="Merged PR"
-        else
-          export CHANGE_TYPE="Code Push"
         fi
 
         export DATA='{
-          "short_description": "Automated Change Request from GitHub Actions - Testing",
+          "short_description": "Automated Change Request from GitHub Actions - Testing2",
           "description": "'"$CHANGE_TYPE"' in GitHub repository \n '"$GITHUB_REPOSITORY"' \n '"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$GITHUB_REF"'"
         }'
 
