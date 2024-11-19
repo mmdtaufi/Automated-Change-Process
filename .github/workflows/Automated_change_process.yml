@@ -33,3 +33,13 @@ jobs:
         --user "$SNOW_USER:$SNOW_PASSWORD" \
         --data "$DATA" \
         --fail || echo "Failed to create change request"
+
+        # Extract sys_id from the response and save to a file
+        SYS_ID=$(echo $RESPONSE | jq -r '.result.sys_id')
+        if [ -z "$SYS_ID" ] || [ "$SYS_ID" == "null" ]; then
+          echo "Failed to retrieve sys_id. Response: $RESPONSE"
+          exit 1
+        else
+          echo "Successfully created change request with sys_id: $SYS_ID"
+          echo "$SYS_ID" > change_request_sys_id.txt
+        fi
