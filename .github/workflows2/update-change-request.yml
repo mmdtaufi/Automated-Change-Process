@@ -14,17 +14,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Step 1: Load sys_id of previously created change request (assuming saved in a file)
-    - name: Load Change Request sys_id
-      id: load-sys-id
+    # Step 1: Manually set the sys_id of the change request
+    - name: Set Change Request sys_id
       run: |
-        if [ -f change_request_sys_id.txt ]; then
-          export SYS_ID=$(cat change_request_sys_id.txt)
-          echo "SYS_ID=$SYS_ID" >> $GITHUB_ENV
-        else
-          echo "Change request sys_id not found!"
-          exit 1
-        fi
+        # Manually specify the sys_id here
+        export SYS_ID="fc3ddc1847ca1250617d3e2fe16d4326"
+        echo "SYS_ID=$SYS_ID" >> $GITHUB_ENV
 
     # Step 2: Update Change Request in ServiceNow
     - name: Update ServiceNow Change Request
@@ -47,8 +42,8 @@ jobs:
           "comments": "This is an automated update from GitHub Actions"
         }'
 
-        # Send a PATCH request to ServiceNow to update the change request
-        curl -X PUT "$SNOW_INSTANCE_URL/api/sn_chg_rest/change/$SYS_ID" \
+        # Send a PUT request to ServiceNow to update the change request
+        curl -X PUT "$SNOW_INSTANCE_URL/api/now/table/change_request/$SYS_ID" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --user "$SNOW_USER:$SNOW_PASSWORD" \
